@@ -46,6 +46,8 @@ class ViewController: UIViewController {
             case "➗": performOperation {$1 / $0}
             case "➖": performOperation {$1 - $0}
             case "✔️": performOperation { sqrt($0) }
+            case "sin": performOperation { sin($0) }
+            case "cos": performOperation { cos($0) }
             default: break
             
             
@@ -70,6 +72,9 @@ class ViewController: UIViewController {
     }
     
     
+   
+
+    
     @IBAction func enter() {
         userInMiddleOfTyping = false
         operandStack.append(displayValue)
@@ -78,6 +83,15 @@ class ViewController: UIViewController {
         
     }
     
+    @IBAction func clear() {
+        
+        //clear display 
+        display.text = "0"
+        //clear operandStack
+        operandStack = Array<Double>()
+        //reset userInMiddleOfTyping
+        userInMiddleOfTyping = false
+    }
     var displayValue : Double {
         get {
             return NSNumberFormatter().numberFromString(display.text!)!.doubleValue
