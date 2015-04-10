@@ -31,14 +31,52 @@ class ViewController: UIViewController {
     var operandStack = Array<Double>()
     
     
+    @IBAction func operate(sender: UIButton) {
+    
+        let operation = sender.currentTitle!
+        if userInMiddleOfTyping {
+            enter()
+        }
+        
+        switch operation {
+            case "✖️": performOperation {$0 * $1}
+            case "➕": performOperation {$0 + $1}
+            case "➗": performOperation {$1 / $0}
+            case "➖": performOperation {$1 - $0}
+            case "✔️": performOperation { sqrt($0) }
+            default: break
+            
+            
+        }
+    
+    }
+    
+    func performOperation(operation: (Double,Double) -> Double) { //takes two double and returns 1.
+        if operandStack.count >= 2
+        {
+            displayValue = operation(operandStack.removeLast(), operandStack.removeLast())
+            enter()
+        }
+    }
+    
+    func performOperation(operation: Double -> Double) {
+        if operandStack.count >= 1 {
+        displayValue = operation(operandStack.removeLast())
+        enter()
+        }
+        
+    }
+    
+    
     @IBAction func enter() {
         userInMiddleOfTyping = false
         operandStack.append(displayValue)
+        println("\(operandStack)")
         
         
     }
     
-    var displayValue:Double {
+    var displayValue : Double {
         get {
             return NSNumberFormatter().numberFromString(display.text!)!.doubleValue
         }
