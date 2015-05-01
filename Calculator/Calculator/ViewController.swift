@@ -62,7 +62,7 @@ class ViewController: UIViewController {
     
     }
     
-    func performOperation(operation: (Double,Double) -> Double) { //takes two double and returns 1.
+    private func performOperation(operation: (Double,Double) -> Double) { //takes two double and returns 1.
         if operandStack.count >= 2
         {
             displayValue = operation(operandStack.removeLast(), operandStack.removeLast())
@@ -71,7 +71,7 @@ class ViewController: UIViewController {
         //after an operation is performed.
     }
     
-    func performOperation(operation: Double -> Double) {
+     func performOperation(operation: Double -> Double) {
         if operandStack.count >= 1 {
         displayValue = operation(operandStack.removeLast())
         enter()
