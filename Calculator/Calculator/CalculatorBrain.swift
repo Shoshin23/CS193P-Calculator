@@ -70,12 +70,12 @@ class CalculatorBrain {
         return evaluate(opStack).result
     }
     
-    private func pushOperand(operand: Double) -> Double? {
+     func pushOperand(operand: Double) -> Double? {
         opStack.append(Op.Operand(operand))
         return evaluate()
     }
     
-    private func performOperation(symbol: String) -> Double? {
+     func performOperation(symbol: String) -> Double? {
         if let operation = knownOps[symbol] {
             opStack.append(operation)
         }

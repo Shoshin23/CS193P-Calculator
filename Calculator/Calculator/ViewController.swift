@@ -16,6 +16,8 @@ class ViewController: UIViewController {
     @IBOutlet weak var history: UILabel!
     var historyIsBlank = false
     
+    var brain = CalculatorBrain()
+    
     
     var userInMiddleOfTyping : Bool = false
 
@@ -45,39 +47,16 @@ class ViewController: UIViewController {
         if userInMiddleOfTyping {
             enter()
         }
-        
-        switch operation {
-            case "x": performOperation {$0 * $1}
-            case "+": performOperation {$0 + $1}
-            case "÷": performOperation {$1 / $0}
-            case "-": performOperation {$1 - $0}
-            case "√": performOperation { sqrt($0) }
-            case "sin": performOperation { sin($0) }
-            case "cos": performOperation { cos($0) }
-            default: break
-            
-            
+        if let result = brain.performOperation(operation) {
+            displayValue = result
         }
-        updateHistory(operation)
+        else {
+            displayValue = nil
+        }
+                updateHistory(operation)
     
     }
     
-    private func performOperation(operation: (Double,Double) -> Double) { //takes two double and returns 1.
-        if operandStack.count >= 2
-        {
-            displayValue = operation(operandStack.removeLast(), operandStack.removeLast())
-            enter()
-        }
-        //after an operation is performed.
-    }
-    
-     func performOperation(operation: Double -> Double) {
-        if operandStack.count >= 1 {
-        displayValue = operation(operandStack.removeLast())
-        enter()
-        }
-        
-    }
     
     
    
@@ -85,8 +64,13 @@ class ViewController: UIViewController {
     
     @IBAction func enter() {
         userInMiddleOfTyping = false
-        operandStack.append(displayValue)
-        println("\(operandStack)")
+        if let result = brain.pushOperand(displayValue) {
+            displayValue = result
+            
+        }
+        else {
+            displayValue = nil
+        }
         updateHistory(display.text!)
         
         
@@ -112,7 +96,7 @@ class ViewController: UIViewController {
         //reset userInMiddleOfTyping
         userInMiddleOfTyping = false
     }
-    var displayValue : Double {
+    var displayValue : Double! {
         get {
             return NSNumberFormatter().numberFromString(display.text!)!.doubleValue
         }
